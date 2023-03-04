@@ -1,5 +1,5 @@
 # Lambda Building System
-A module for Lambda Players that allows Lambdas to build duplications and paste duplications with the tool gun.
+A module for Lambda Players that allows Lambdas to manually build duplications with their physics gun and paste duplications with the tool gun.
 
 
 ### Lambda Dupe Creator
