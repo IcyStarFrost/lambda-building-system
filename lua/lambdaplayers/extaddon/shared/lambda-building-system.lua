@@ -22,7 +22,7 @@ local function CreateEntityFromTable( Player, EntTable, LocalPos, LocalAng )
     --
     -- Convert position/angle to `local`
     --
-    if ( EntTable.Pos && EntTable.Angle ) then
+    if ( EntTable.Pos and EntTable.Angle ) then
 
         EntTable.Pos, EntTable.Angle = LocalToWorld( EntTable.Pos, EntTable.Angle, LocalPos, LocalAng )
 
@@ -450,33 +450,30 @@ local function Initialize( self )
             local entity
             ProtectedCall( function() entity = duplicator.CreateConstraintFromTable( Constraint, CreatedEntities, ( game.SinglePlayer() and Entity( 1 ) or self:GetCreator() ) ) end )
 
-            if IsValid( entity ) then
-
-                -- Use the toolgun wherever a visible constraint is found. Basically anything that isn't at the origin
-                if entity:GetPos() != Vector() then
-
-                    -- Random movement again
-                    if random( 1, 4 ) == 1 then
-                        local randomvec = VectorRand( -maxslength - 100, maxslength + 100 ) randomvec[ 3 ] = 5
+            -- Use the toolgun wherever a visible constraint is found. Basically anything that isn't at the origin
+            if IsValid( entity ) and entity:GetPos() != Vector() then
+                
+                -- Random movement again
+                if random( 1, 4 ) == 1 then
+                    local randomvec = VectorRand( -maxslength - 100, maxslength + 100 ) randomvec[ 3 ] = 5
         
-                        tracetable.start = self.l_dupeposition + MinsMaxsCenter( self.l_dupedata.Mins, self.l_dupedata.Maxs )
-                        tracetable.endpos = self.l_dupeposition + randomvec 
-                        tracetable.collisiongroup = COLLISION_GROUP_WORLD
-                        tracetable.mask = MASK_SOLID_BRUSHONLY
-                        local result = Trace( tracetable )
+                    tracetable.start = self.l_dupeposition + MinsMaxsCenter( self.l_dupedata.Mins, self.l_dupedata.Maxs )
+                    tracetable.endpos = self.l_dupeposition + randomvec 
+                    tracetable.collisiongroup = COLLISION_GROUP_WORLD
+                    tracetable.mask = MASK_SOLID_BRUSHONLY
+                    local result = Trace( tracetable )
         
-                        if !result.Hit then
-                            self:MoveToPos( self.l_dupeposition + randomvec  )
-                        end
-        
+                    if !result.Hit then
+                        self:MoveToPos( self.l_dupeposition + randomvec  )
                     end
-
-                    self:LookTo( entity, 3 )
-
-                    coroutine.wait( 1 )
         
-                    self:UseWeapon( entity:GetPos() )
                 end
+
+                self:LookTo( entity, 3 )
+
+                coroutine.wait( 1 )
+        
+                self:UseWeapon( entity:GetPos() )
             end
 
         end
