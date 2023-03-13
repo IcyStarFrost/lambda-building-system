@@ -78,8 +78,10 @@ end
 
 -- Manually Build a dupe using both physgun and toolgun
 local function BuildDupe( self )
+    local owner = ( game.SinglePlayer() and Entity( 1 ) or self:GetCreator() )
+
     -- Dupes can only be built if a Lambda has a creator or the game is currently in singleplayer. This is because dupes require a player to built with.
-    if !self:CanEquipWeapon( "physgun" ) or !self:CanEquipWeapon( "toolgun" ) or ( !IsValid( self:GetCreator() ) or !self:GetCreator():IsPlayer() ) or random( 1, 2 ) == 1 then return end
+    if !self:CanEquipWeapon( "physgun" ) or !self:CanEquipWeapon( "toolgun" ) or ( !IsValid( owner ) or !owner:IsPlayer() ) then return end
 
     local dupedata = GetDupeData()
     if !dupedata then return end
@@ -97,7 +99,8 @@ AddBuildFunctionToLambdaBuildingFunctions( "Dupes", "Allow Building Dupes", "All
 
 -- Pastes a dupe
 local function DuplicatorTool( self, ent )
-    if !IsValid( self:GetCreator() ) or !self:GetCreator():IsPlayer() or random( 1, 2 ) == 1 then return end 
+    local ply = ( game.SinglePlayer() and Entity( 1 ) or self:GetCreator() )
+    if !IsValid( ply ) or !ply:IsPlayer() then return end 
 
     local dupedata = GetDupeData()
 
@@ -105,7 +108,7 @@ local function DuplicatorTool( self, ent )
     local result = self:Trace( self:GetPos() + Vector( random( -1000, 1000 ), random( -1000, 1000 ), random( -100, 30 ) ) )
     local pos = result.HitPos
     local angs = self:GetAngles()
-    local ply = ( game.SinglePlayer() and Entity( 1 ) or self:GetCreator() )
+    
 
     self:LookTo( pos, 3 )
 
