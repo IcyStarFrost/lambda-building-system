@@ -119,7 +119,6 @@ function TOOL:LeftClick( tr )
         duplicator.SetLocalPos( Vector() )
 
         local json = TableToJSON( dupedata )
-        json = compress( json )
 
         SaveDupe( json, owner )
 
@@ -149,7 +148,6 @@ function TOOL:LeftClick( tr )
         duplicator.SetLocalAng( Angle() )
 
         local json = TableToJSON( dupedata )
-        json = compress( json )
 
         SaveDupe( json, owner )
 
@@ -228,7 +226,6 @@ if CLIENT then
 
     local function CreateDupeIcon( filename, Dupe )
         if !Dupe then return end
-        Dupe = decompress( Dupe )
         Dupe = JSONToTable( Dupe )
 
         hook.Add( "PostRender", "RenderDupeIcon", function() -- Gmod's function to creating a icon for a duplication. We are using this too to make a icon in the data folder so players know what dupe is what via visual reference
@@ -495,7 +492,7 @@ if CLIENT then
         buildstring = buildstring .. chunk
 
         if isdone then
-            LAMBDAFS:WriteFile( filename, buildstring, nil, true ) 
+            LAMBDAFS:WriteFile( filename, JSONToTable( buildstring ), "compressed" ) 
 
             CreateDupeIcon( filename, buildstring )
 
