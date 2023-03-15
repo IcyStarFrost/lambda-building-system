@@ -118,8 +118,9 @@ function TOOL:LeftClick( tr )
         duplicator.SetLocalAng( Angle() )
         duplicator.SetLocalPos( Vector() )
 
-        local json = TableToJSON( dupedata )
-
+        local json
+        local ok = pcall( function() json = TableToJSON( dupedata ) end )
+        if !ok then owner:ChatPrint( "This contraption contains a Entity that cannot be saved" ) return end
         SaveDupe( json, owner )
 
     else    -- Area copy mode
@@ -147,7 +148,9 @@ function TOOL:LeftClick( tr )
         duplicator.SetLocalPos( Vector() )
         duplicator.SetLocalAng( Angle() )
 
-        local json = TableToJSON( dupedata )
+        local json
+        local ok = pcall( function() json = TableToJSON( dupedata ) end )
+        if !ok then owner:ChatPrint( "This contraption contains a Entity that cannot be saved" ) return end
 
         SaveDupe( json, owner )
 
