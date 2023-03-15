@@ -89,8 +89,7 @@ local function SaveDupe( dupe, ply )
         for k, v in ipairs( chunks ) do
             net.Start( "lambdaplayers_buildsystem_savedupe" )
             net.WriteString( "lambdaplayers/duplications/" .. filename .. ".vmt" )
-            net.WriteUInt( #v, 32 )
-            net.WriteData( v )
+            net.WriteString( v )
             net.WriteBool( k == #chunks )
             net.Send( ply )
 
@@ -121,6 +120,7 @@ function TOOL:LeftClick( tr )
         local json
         local ok = pcall( function() json = TableToJSON( dupedata ) end )
         if !ok then owner:ChatPrint( "This contraption contains a Entity that cannot be saved" ) return end
+
         SaveDupe( json, owner )
 
     else    -- Area copy mode
@@ -488,8 +488,7 @@ if CLIENT then
         receiving = true
 
         local filename = net.ReadString()
-        local bytes = net.ReadUInt( 32 )
-        local chunk = net.ReadData( bytes )
+        local chunk = net.ReadString()
         local isdone = net.ReadBool()
 
         buildstring = buildstring .. chunk
