@@ -475,6 +475,7 @@ local function Initialize( self )
                 self:LookTo( entity, 3 )
 
                 coroutine.wait( 1 )
+                if !IsValid( entity ) then continue end
         
                 self:UseWeapon( entity:GetPos() )
             end
